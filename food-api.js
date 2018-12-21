@@ -9,6 +9,7 @@ var getRecipes = function () {
         url: foodQueryURL,
         method: "GET"
     }).then(function (response) {
-
+        console.log(response);
+        
     });
 }
