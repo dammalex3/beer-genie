@@ -1,19 +1,78 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Beer Genie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script
-src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
     <script src="food-api.js"></script>
 </head>
+
 <body>
-    
+    <div class="container-fluid bg-warning h-50 d-inline-block">
+        <h1 class="display-4 text-center">The Beer Genie</h1>
+        <p class="lead">Select a style to below to discover a list of beers.</p>
+        <p class="lead">After that click on the Pairing Pickle to find a recipe that featuring an ingredient that
+            matches well with your sleected style of beer!</p>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2">
+                <div class="card styleCard">
+                    <img src="assets/images/Default-bottle.jpg" class="card-img-top" alt="Default Bottle">
+                    <div class="card-body">
+                        <p class="card-text">IPA</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card styleCard">
+                    <img src="assets/images/Default-bottle.jpg" class="card-img-top" alt="Default Bottle">
+                    <div class="card-body">
+                        <p class="card-text">Lager</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card styleCard">
+                    <img src="assets/images/Default-bottle.jpg" class="card-img-top" alt="Default Bottle">
+                    <div class="card-body">
+                        <p class="card-text">Wheat beer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card styleCard">
+                    <img src="assets/images/Default-bottle.jpg" class="card-img-top" alt="Default Bottle">
+                    <div class="card-body">
+                        <p class="card-text">Stout</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card styleCard">
+                    <img src="assets/images/Default-bottle.jpg" class="card-img-top" alt="Default Bottle">
+                    <div class="card-body">
+                        <p class="card-text">Brown Ale</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="card styleCard">
+                    <img src="assets/images/Default-bottle.jpg" class="card-img-top" alt="Default Bottle">
+                    <div class="card-body">
+                        <p class="card-text">Porter</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
