@@ -1,7 +1,56 @@
-/* #beer-table {
-    border: 1px solid black;
-} */
+.container{
+    text-align: center;
+    
+    
+    padding-top: 25px;
+}
+.container-fluid{
+    text-align: center;
+    
+    
+    padding-top: 25px;
+}
 
-/* tr {
-    border: 1px solid black;
-} */
+
+    
+.body{
+    text-align: center;
+ 
+}
+.h1{
+    
+    padding-top: 50px;
+}
+.figure{
+   font-family: 'Homemade Apple', cursive;
+   font-size: 22pt; 
+   color: rgb(42, 42, 42);
+   text-align: center;
+   width: 165px;
+   height: auto;
+   padding: 10px;
+}
+.figure-caption{
+    
+    color: rgb(42, 42, 42);
+}
+#footer {
+    position: fixed; 
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    height: 50px;
+    font-family: 'Open Sans', sans-serif;
+}
+    .heading{
+        font-family: 'Homemade Apple', cursive;
+        color: rgb(42, 42, 42);
+    }
+#beerGenie{
+    width: 225px;
+    padding-bottom: 25px;
+    text-align: center;
+}
+.lead{
+    font-family: 'Open Sans', sans-serif;
+}
