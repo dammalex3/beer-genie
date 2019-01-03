@@ -1,34 +1,19 @@
 $(document).ready(function () {
 
     var antiCORS = 'https://cors-anywhere.herokuapp.com/';
-
+    var recipeNumber = 0;
     var foodQueryArray = ["chicken", "beef", "grains", "beans", "shellfish", "pork"];
-
-    var getRecipes = function (num) {
-        var query = "q=" + foodQueryArray[num];
-        var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
-        console.log(foodQueryURL)
-        $.ajax({
-            url: foodQueryURL,
-            method: "GET"
-        }).then(function (response) {
-            console.log(response);
-            var data = response.hits;
-            console.log(data.length);
-            for (var k = 0; k < data.length; k++) {
-                console.log(data[k].recipe.url);
-                console.log(data[k].recipe.ingredients);
-                console.log(data[k].recipe.image);
-            }
-        });
-    };
+    var getRandomRecipe = function () {
+        recipeNumber = Math.floor(Math.random() * 10);
+    }
+    var orderNumber = 0;
+    var buttonCounter = 0;
 
     $('.styleCard').on('click', function () {
 
-        console.log('I did something');
-        num = parseInt($(this).attr('data-order'));
-        console.log("Your num is: " + num)
-        getRecipes(num);
+        orderNumber = parseInt($(this).attr('data-order'));
+
+        // This portion will move to a separate onclick that delegates to the html body, that way we can use an element we make when the beer API is called and we populate the table.
 
         //get the list of styles for that beer from the html
         var beerStyles = $(this).attr("data-style");
@@ -79,14 +64,47 @@ $(document).ready(function () {
                         newRow.append($("<td>").text(beerABV));
                         newRow.append($("<td>").text(beerDescription));
 
+                        newRow.append($('<td>').addClass('recipeButton').attr('data-counter', buttonCounter).text("Would you like a recipe?"));
+
                         $("#beer-table").append(newRow);
                         // $("#beer-list-div").append(beerPic);
-
+                        buttonCounter++;
                     });
                 }
             });
 
         }
 
-    })
+    });
+
+    $('body').on('click', '.recipeButton', function () {
+
+        // Find a way to make this not go again once you click it, possibly use remove and then add a different <td> onto the end
+
+        getRandomRecipe();
+        
+        // This line keeps you from requesting a recipe each time you click, it will need t
+        $(this).removeClass('recipeButton').addClass('recipeSpace');
+
+        console.log('I did something');
+        var query = "q=" + foodQueryArray[orderNumber];
+        var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
+
+        console.log(foodQueryURL)
+
+
+        $.ajax({
+            url: foodQueryURL,
+            method: "GET"
+        }).then(function (response) {
+            console.log(response);
+            var data = response.hits;
+            console.log(data.length);
+                $('.recipeSpace').text(data[recipeNumber].recipe.url).removeClass('recipeSpace');
+            console.log(data[recipeNumber].recipe.url);
+            console.log(data[recipeNumber].recipe.ingredients);
+            console.log(data[recipeNumber].recipe.image);
+        });
+
+    });
 });
