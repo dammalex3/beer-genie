@@ -1,34 +1,66 @@
 $(document).ready(function () {
+    
     var antiCORS = 'https://cors-anywhere.herokuapp.com/';
 
     $('.styleCard').on('click', function () {
-        console.log(style);
-        var beerQueryURL = antiCORS+'https://api.brewerydb.com/v2/beer/random?key=4b70afc53eb299a79abe53c0e1a2f954'
+        
+        //get the list of styles for that beer from the html
+        var beerStyles = $(this).attr("data-style");
 
-            // Here is where the ajax call for the brewerydb api will go.
-            // run a get with a query for style using the style variable we grabbed from the on click
-            // next fetch data from the response object to print into a table made by jquery
+        //create an array of the list of styles
+        var beerStylesArray = beerStyles.split(",");
 
-        $.ajax({
-            url: beerQueryURL,
-            method: "GET"
-        }).then(function (response) {
-            console.log(response);
-            var data = response.data;
+        //create the shell of the table using Jquery
+        $("#beer-list-div").empty();
+        var beerTable = $("<table>");
+        var beerTableHeader = $("<thead>");
+        beerTable.attr('id', 'beer-table');
+        $("#beer-list-div").append(beerTable);
+        
+        //loop through the array and call the brewery db api with each style to get a random beer of that style
+        for (var i=0; i<beerStylesArray.length; i++) {
 
-            // Here we create a table with Jquery,  Inside the for loop below we will append rows to the table 
-            // Here is the for loop, this is going to fetch the  
+            var beerStyleQueryURL = antiCORS + 'https://api.brewerydb.com/v2/beer/random?styleId=' + beerStylesArray[i] + '&key=ca93fb5030f16f2b478658d317dc88a3';
 
-            // This ajax call now grabs a random beer, from this we can tack on another ajax call to get more specific info about the beer.
-            // From there we can make a table of recommended ingredients and recipes
+            $.ajax({
+                url: beerStyleQueryURL,
+                method: "GET",
+                success: function (response){
+                    var beerID = response.data.id;
+                    console.log(beerID);
+                    var beerIDQueryURL = antiCORS + 'https://sandbox-api.brewerydb.com/v2/beers/?ids='+beerID+'&key=ca93fb5030f16f2b478658d317dc88a3';
+                    $.ajax({
+                        url: beerIDQueryURL,
+                        method: "GET"
+                    }).then(function (IDresponse) {
+                        
+                        // get the values from the api response
+                        var beerName = IDresponse.data[0].nameDisplay;
+                        var beerDescription = IDresponse.data[0].description;
+                        var beerABV = IDresponse.data[0].abv;
+                        var beerPicURL = IDresponse.data[0].labels.medium;
 
-            for (var k = 0; k < data.length; k++) {
-                console.log(data[k]);
-                console.log("Ingredient Pair")
-            };
-        })
+                        var beerPic = $("<img>");
+                        beerPic.attr("src", beerPicURL);
+                        // console.log(beerPic);
+                        
+                        // Create the new row
+                        var newRow = $("<tr>");
+                        var newTD = $("<td>");
+                        newTD.append(beerPic)
+                        newRow.append(newTD);
+                        newRow.append($("<td>").text(beerName));
+                        newRow.append($("<td>").text(beerABV));
+                        newRow.append($("<td>").text(beerDescription));
+    
+                        $("#beer-table").append(newRow);
+                        // $("#beer-list-div").append(beerPic);
+    
+                    });
+                }
+            });
 
-
+        }        
 
     })
 });
