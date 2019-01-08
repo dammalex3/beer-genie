@@ -4,7 +4,7 @@ $(document).ready(function () {
     var recipeNumber = 0;
     var foodQueryArray = ["chicken", "beef", "grains", "beans", "shellfish", "pork"];
     var getRandomRecipe = function () {
-        recipeNumber = Math.floor(Math.random() * 10);
+        recipeNumber = Math.floor(Math.random() * 50);
     }
     var orderNumber = 0;
     var buttonCounter = 0;
@@ -57,6 +57,7 @@ $(document).ready(function () {
 
                         // Create the new row
                         var newRow = $("<tr>");
+                        newRow.addClass('row'+buttonCounter);
                         var newTD = $("<td>");
                         newTD.append(beerPic)
                         newRow.append(newTD);
@@ -85,13 +86,15 @@ $(document).ready(function () {
         
         // This line keeps you from requesting a recipe each time you click, it will need t
         $(this).removeClass('recipeButton').addClass('recipeSpace');
+        var rowNumber = parseInt($(this).attr('data-counter'));
+        var recipeImageBox = $('<td>').addClass('recipeImage'+rowNumber);
+        var recipeTimeBox = $('<td>').addClass('recipeTime'+rowNumber);
+        $('.row'+rowNumber).append(recipeImageBox, recipeTimeBox);
 
-        console.log('I did something');
         var query = "q=" + foodQueryArray[orderNumber];
-        var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
+        var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
 
         console.log(foodQueryURL)
-
 
         $.ajax({
             url: foodQueryURL,
@@ -100,7 +103,14 @@ $(document).ready(function () {
             console.log(response);
             var data = response.hits;
             console.log(data.length);
-                $('.recipeSpace').text(data[recipeNumber].recipe.url).removeClass('recipeSpace');
+            var recipeLink = data[recipeNumber].recipe.url;
+                $('.recipeSpace').html('<a href="'+recipeLink+'" target="_blank">'+data[recipeNumber].recipe.label+'</a>').removeClass('recipeSpace');
+                $('.recipeImage'+rowNumber).html('<img src="'+data[recipeNumber].recipe.image+'" alt="'+data[recipeNumber].recipe.label+' height="100" width="100">');
+                if (data[recipeNumber].recipe.totalTime != "0"){
+                    $('.recipeTime'+rowNumber).text('Approximate cook time: '+data[recipeNumber].recipe.totalTime+' minutes');
+                } else {
+                    $('.recipeTime'+rowNumber).text("Sorry, we're not sure how long this one will take");
+                };
             console.log(data[recipeNumber].recipe.url);
             console.log(data[recipeNumber].recipe.ingredients);
             console.log(data[recipeNumber].recipe.image);
