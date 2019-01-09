@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     var antiCORS = 'https://cors-anywhere.herokuapp.com/';
     var recipeNumber = 0;
-    var foodQueryArray = ["chicken", "beef", "grains", "beans", "shellfish", "pork"];
+    var foodQueryArray = ["chicken", "beef", "grains", "beans", "shellfish"];
     // Make separate food arrays for the matching style IDS
 
     var beerList = [];
