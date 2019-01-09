@@ -52,7 +52,15 @@ $(document).ready(function () {
 
             // get the values from the object
             var beerName = beerObjectArray[randomInt].nameDisplay;
-            var beerDescription = beerObjectArray[randomInt].description;
+
+            if (beerObjectArray[randomInt].description != null) {
+                var beerDescription = beerObjectArray[randomInt].description;
+            }
+            else {
+                var beerDescription = "No Description Available";
+                console.log(beerDescription);
+            }
+
             var beerABV = beerObjectArray[randomInt].abv;
             var beerPicURL = beerObjectArray[randomInt].labels.medium;
 
