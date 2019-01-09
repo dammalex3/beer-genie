@@ -7,9 +7,11 @@ $(document).ready(function () {
         recipeNumber = Math.floor(Math.random() * 50);
     }
     var orderNumber = 0;
-    var buttonCounter = 0;
+
 
     $('.styleCard').on('click', function () {
+
+        var buttonCounter = 0;
 
         orderNumber = parseInt($(this).attr('data-order'));
 
@@ -57,7 +59,7 @@ $(document).ready(function () {
 
                         // Create the new row
                         var newRow = $("<tr>");
-                        newRow.addClass('row'+buttonCounter);
+                        newRow.addClass('row' + buttonCounter);
                         var newTD = $("<td>");
                         newTD.append(beerPic)
                         newRow.append(newTD);
@@ -83,13 +85,13 @@ $(document).ready(function () {
         // Find a way to make this not go again once you click it, possibly use remove and then add a different <td> onto the end
 
         getRandomRecipe();
-        
+
         // This line keeps you from requesting a recipe each time you click, it will need t
         $(this).removeClass('recipeButton').addClass('recipeSpace');
         var rowNumber = parseInt($(this).attr('data-counter'));
-        var recipeImageBox = $('<td>').addClass('recipeImage'+rowNumber);
-        var recipeTimeBox = $('<td>').addClass('recipeTime'+rowNumber);
-        $('.row'+rowNumber).append(recipeImageBox, recipeTimeBox);
+        var recipeImageBox = $('<td>').addClass('recipeImage' + rowNumber);
+        var recipeTimeBox = $('<td>').addClass('recipeTime' + rowNumber);
+        $('.row' + rowNumber).append(recipeImageBox, recipeTimeBox);
 
         var query = "q=" + foodQueryArray[orderNumber];
         var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
@@ -104,17 +106,61 @@ $(document).ready(function () {
             var data = response.hits;
             console.log(data.length);
             var recipeLink = data[recipeNumber].recipe.url;
-                $('.recipeSpace').html('<a href="'+recipeLink+'" target="_blank">'+data[recipeNumber].recipe.label+'</a>').removeClass('recipeSpace');
-                $('.recipeImage'+rowNumber).html('<img src="'+data[recipeNumber].recipe.image+'" alt="'+data[recipeNumber].recipe.label+' height="100" width="100">');
-                if (data[recipeNumber].recipe.totalTime != "0"){
-                    $('.recipeTime'+rowNumber).text('Approximate cook time: '+data[recipeNumber].recipe.totalTime+' minutes');
-                } else {
-                    $('.recipeTime'+rowNumber).text("Sorry, we're not sure how long this one will take");
-                };
+            $('.recipeSpace').html('<a href="' + recipeLink + '" target="_blank">' + data[recipeNumber].recipe.label + '</a>').removeClass('recipeSpace');
+            $('.recipeImage' + rowNumber).html('<img src="' + data[recipeNumber].recipe.image + '" alt="' + data[recipeNumber].recipe.label + ' height="100" width="100">');
+            if (data[recipeNumber].recipe.totalTime != "0") {
+                $('.recipeTime' + rowNumber).text('Approximate cook time: ' + data[recipeNumber].recipe.totalTime + ' minutes');
+            } else {
+                $('.recipeTime' + rowNumber).text("Sorry, we're not sure how long this one will take");
+            };
             console.log(data[recipeNumber].recipe.url);
             console.log(data[recipeNumber].recipe.ingredients);
             console.log(data[recipeNumber].recipe.image);
         });
 
     });
+
+    $('.searchButton').on('click', function () {
+        event.preventDefault();
+
+        var searchValue = $('#searchBar').val().trim();
+        var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3'
+
+        $("#beer-list-div").empty();
+        var beerTable = $("<table>");
+        var beerTableHeader = $("<thead>");
+        beerTable.attr('id', 'beer-table');
+        $("#beer-list-div").append(beerTable);
+
+        $.ajax({
+            url: beerSearchURL,
+            method: "GET"
+        }).then(function (searchResponse) {
+
+            console.log(searchResponse);
+
+            var beerName = searchResponse.data[0].nameDisplay;
+            var beerDescription = searchResponse.data[0].description;
+            var beerABV = searchResponse.data[0].abv;
+            var beerPicURL = searchResponse.data[0].labels.medium;
+
+            console.log(beerName);
+
+            var beerPic = $("<img>");
+            beerPic.attr("src", beerPicURL);
+            // console.log(beerPic);
+
+            // Create the new row
+            var newRow = $("<tr>");
+            newRow.addClass('row');
+            var newTD = $("<td>");
+            newTD.append(beerPic)
+            newRow.append(newTD);
+            newRow.append($("<td>").text(beerName));
+            newRow.append($("<td>").text(beerABV));
+            newRow.append($("<td>").text(beerDescription));
+            $("#beer-table").append(newRow);
+        })
+    });
+
 });
