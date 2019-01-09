@@ -3,9 +3,10 @@ $(document).ready(function () {
     var antiCORS = 'https://cors-anywhere.herokuapp.com/';
     var recipeNumber = 0;
     var foodQueryArray = ["chicken", "beef", "grains", "beans", "shellfish", "pork"];
-
+    // Make separate food arrays for the matching style IDS
 
     var beerList = [];
+    var searchList = [];
     var styleCount = 0;
     var numBeersToDisplay = 5;
     var totalStyles = 0;
@@ -68,7 +69,7 @@ $(document).ready(function () {
             beerPic.attr("src", beerPicURL);
 
             // Create the new row
-            var newRow = $("<tr>");
+            var newRow = $("<tr>").addClass('row'+beerDisplayCounter);
             var newTD = $("<td>");
             newTD.append(beerPic)
             newRow.append(newTD);
@@ -119,6 +120,7 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.recipeButton', function () {
+        // Add an if to check whether it is a style button click or a search click
 
         // Find a way to make this not go again once you click it, possibly use remove and then add a different <td> onto the end
 
@@ -162,8 +164,67 @@ $(document).ready(function () {
         event.preventDefault();
 
         var searchValue = $('#searchBar').val().trim();
-        var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3'
+        var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3';
+        var searchCounter = 0;
 
+        $("#beer-list-div").empty();
+        var beerTable = $("<table>");
+        var beerTableHeader = $("<thead>");
+        beerTable.attr('id', 'beer-table');
+        $("#beer-list-div").append(beerTable);
+
+        $.ajax({
+            url: beerSearchURL,
+            method: "GET"
+        }).then(function (searchResponse) {
+            console.log(searchResponse);
+
+            for (var i = 0; i < searchResponse.data.length; i++) {
+                searchList.push(searchResponse.data[i]);
+            };
+            if (searchList.length > 5) {
+                for (var j = 0; j < 5; j++) {
+                    console.log(searchList);
+                    console.log("the greater than 5 ran");
+                    var beerName = searchList[j].nameDisplay;
+                    var beerDescription = searchList[j].description;
+                    var beerABV = searchList[j].abv;
+
+                    var newRow = $("<tr>").addClass('row'+searchCounter);
+                    var newTD = $("<td>");
+
+                    newRow.append(newTD);
+                    newRow.append($("<td>").text(beerName));
+                    newRow.append($("<td>").text(beerABV));
+                    newRow.append($("<td>").text(beerDescription));
+                    // Add another data-style to specifiy this is the search results
+                    newRow.append($('<td>').addClass('recipeButton').attr('data-counter', searchCounter).text('Click for a Recipe!'));
+
+                    $("#beer-table").append(newRow);
+                    console.log(beerName);
+
+                    searchCounter++;
+                }
+            } else if (searchList.length > 0) {
+                for (var j = 0; j < searchList.length; j++) {
+                    var beerName = searchList[j].nameDisplay;
+                    var beerDescription = searchList[j].description;
+                    var beerABV = searchList[j].abv;
+
+                    var newRow = $("<tr>").addClass('row'+searchCounter);
+                    var newTD = $("<td>");
+
+                    newRow.append(newTD);
+                    newRow.append($("<td>").text(beerName));
+                    newRow.append($("<td>").text(beerABV));
+                    newRow.append($("<td>").text(beerDescription));
+                    newRow.append($('<td>').addClass('recipeButton').attr('data-counter', searchCounter).text('Click for a Recipe!'));
+
+                    $("#beer-table").append(newRow);
+
+                    searchCounter++;
+                }
+            }
+        });
     });
-
 });
