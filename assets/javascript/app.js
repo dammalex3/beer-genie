@@ -69,7 +69,7 @@ $(document).ready(function () {
             beerPic.attr("src", beerPicURL);
 
             // Create the new row
-            var newRow = $("<tr>");
+            var newRow = $("<tr>").addClass('row'+beerDisplayCounter);
             var newTD = $("<td>");
             newTD.append(beerPic)
             newRow.append(newTD);
@@ -190,7 +190,7 @@ $(document).ready(function () {
                     var beerDescription = searchList[j].description;
                     var beerABV = searchList[j].abv;
 
-                    var newRow = $("<tr>");
+                    var newRow = $("<tr>").addClass('row'+searchCounter);
                     var newTD = $("<td>");
 
                     newRow.append(newTD);
@@ -211,7 +211,7 @@ $(document).ready(function () {
                     var beerDescription = searchList[j].description;
                     var beerABV = searchList[j].abv;
 
-                    var newRow = $("<tr>");
+                    var newRow = $("<tr>").addClass('row'+searchCounter);
                     var newTD = $("<td>");
 
                     newRow.append(newTD);
