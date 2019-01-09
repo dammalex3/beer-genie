@@ -69,7 +69,7 @@ $(document).ready(function () {
             beerPic.attr("src", beerPicURL);
 
             // Create the new row
-            var newRow = $("<tr>").addClass('row'+beerDisplayCounter);
+            var newRow = $("<tr>").addClass('row' + beerDisplayCounter);
             var newTD = $("<td>");
             newTD.append(beerPic)
             newRow.append(newTD);
@@ -164,67 +164,70 @@ $(document).ready(function () {
         event.preventDefault();
 
         var searchValue = $('#searchBar').val().trim();
-        var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3';
-        var searchCounter = 0;
+        if (searchValue.length > 0) {
 
-        $("#beer-list-div").empty();
-        var beerTable = $("<table>");
-        var beerTableHeader = $("<thead>");
-        beerTable.attr('id', 'beer-table');
-        $("#beer-list-div").append(beerTable);
+            var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3';
+            var searchCounter = 0;
 
-        $.ajax({
-            url: beerSearchURL,
-            method: "GET"
-        }).then(function (searchResponse) {
-            console.log(searchResponse);
+            $("#beer-list-div").empty();
+            var beerTable = $("<table>");
+            var beerTableHeader = $("<thead>");
+            beerTable.attr('id', 'beer-table');
+            $("#beer-list-div").append(beerTable);
 
-            for (var i = 0; i < searchResponse.data.length; i++) {
-                searchList.push(searchResponse.data[i]);
-            };
-            if (searchList.length > 5) {
-                for (var j = 0; j < 5; j++) {
-                    console.log(searchList);
-                    console.log("the greater than 5 ran");
-                    var beerName = searchList[j].nameDisplay;
-                    var beerDescription = searchList[j].description;
-                    var beerABV = searchList[j].abv;
+            $.ajax({
+                url: beerSearchURL,
+                method: "GET"
+            }).then(function (searchResponse) {
+                console.log(searchResponse);
 
-                    var newRow = $("<tr>").addClass('row'+searchCounter);
-                    var newTD = $("<td>");
+                for (var i = 0; i < searchResponse.data.length; i++) {
+                    searchList.push(searchResponse.data[i]);
+                };
+                if (searchList.length > 5) {
+                    for (var j = 0; j < 5; j++) {
+                        console.log(searchList);
+                        console.log("the greater than 5 ran");
+                        var beerName = searchList[j].nameDisplay;
+                        var beerDescription = searchList[j].description;
+                        var beerABV = searchList[j].abv;
 
-                    newRow.append(newTD);
-                    newRow.append($("<td>").text(beerName));
-                    newRow.append($("<td>").text(beerABV));
-                    newRow.append($("<td>").text(beerDescription));
-                    // Add another data-style to specifiy this is the search results
-                    newRow.append($('<td>').addClass('recipeButton').attr('data-counter', searchCounter).text('Click for a Recipe!'));
+                        var newRow = $("<tr>").addClass('row' + searchCounter);
+                        var newTD = $("<td>");
 
-                    $("#beer-table").append(newRow);
-                    console.log(beerName);
+                        newRow.append(newTD);
+                        newRow.append($("<td>").text(beerName));
+                        newRow.append($("<td>").text(beerABV));
+                        newRow.append($("<td>").text(beerDescription));
+                        // Add another data-style to specifiy this is the search results
+                        newRow.append($('<td>').addClass('recipeButton').attr('data-counter', searchCounter).text('Click for a Recipe!'));
 
-                    searchCounter++;
+                        $("#beer-table").append(newRow);
+                        console.log(beerName);
+
+                        searchCounter++;
+                    }
+                } else if (searchList.length > 0) {
+                    for (var j = 0; j < searchList.length; j++) {
+                        var beerName = searchList[j].nameDisplay;
+                        var beerDescription = searchList[j].description;
+                        var beerABV = searchList[j].abv;
+
+                        var newRow = $("<tr>").addClass('row' + searchCounter);
+                        var newTD = $("<td>");
+
+                        newRow.append(newTD);
+                        newRow.append($("<td>").text(beerName));
+                        newRow.append($("<td>").text(beerABV));
+                        newRow.append($("<td>").text(beerDescription));
+                        newRow.append($('<td>').addClass('recipeButton').attr('data-counter', searchCounter).text('Click for a Recipe!'));
+
+                        $("#beer-table").append(newRow);
+
+                        searchCounter++;
+                    }
                 }
-            } else if (searchList.length > 0) {
-                for (var j = 0; j < searchList.length; j++) {
-                    var beerName = searchList[j].nameDisplay;
-                    var beerDescription = searchList[j].description;
-                    var beerABV = searchList[j].abv;
-
-                    var newRow = $("<tr>").addClass('row'+searchCounter);
-                    var newTD = $("<td>");
-
-                    newRow.append(newTD);
-                    newRow.append($("<td>").text(beerName));
-                    newRow.append($("<td>").text(beerABV));
-                    newRow.append($("<td>").text(beerDescription));
-                    newRow.append($('<td>').addClass('recipeButton').attr('data-counter', searchCounter).text('Click for a Recipe!'));
-
-                    $("#beer-table").append(newRow);
-
-                    searchCounter++;
-                }
-            }
-        });
+            });
+        }
     });
 });
