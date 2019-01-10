@@ -15,14 +15,15 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
     <script src='assets/javascript/app.js'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
 
 </head>
 
 <body>
     <div class="container-fluid">
-        <img id="beerGenie" src="assets/images/beer genie.png">
+        <img id="beerGenie" src="assets/images/beer genie.png" class="animated bounceIn delay 8s">
         <div class="heading">
-            <h1>The Beer Genie and the Pairing Pickle</h1>
+            <h1 class="animated fadeInRightBig">The Beer Genie and the Pairing Pickle</h1>
             <p class="lead">Select a style to below to discover a list of beers.</p>
             <p class="lead">After that click on the Pairing Pickle to find a recipe that features an ingredient that
                 pairs well with your sleected style of beer!</p>
@@ -32,7 +33,7 @@
         <div class="row justify-content-center">
 
 
-            <div class="figure styleCard" data-style="1,30,31,164,172" data-order="0">
+            <div class="figure styleCard" data-style="1,30,31,164,172" data-order="0" id="animateIpa">
                 <img src="assets/images/ipa1.svg" class="card-img-top" alt="Default Bottle">
 
 
@@ -41,7 +42,7 @@
 
             </div>
 
-            <div class="figure styleCard" data-style="80,93,97,99,101,103,126" data-order="1">
+            <div class="figure styleCard" data-style="80,93,97,99,101,103,126" data-order="1" id="animateLager">
                 <img src="assets/images/lager1.svg" class="card-img-top" alt="Default Bottle">
 
                 <figcaption class="figure-caption">Lager</figcaption><br>
@@ -49,7 +50,7 @@
 
             </div>
 
-            <div class="figure styleCard" data-style="46, 52, 53, 55, 65, 112, 113, 114" data-order="2">
+            <div class="figure styleCard" data-style="46, 52, 53, 55, 65, 112, 113, 114" data-order="2" id="animateWheat">
                 <img src="assets/images/wheat1.svg" class="card-img-top" alt="Default Bottle">
 
                 <figcaption class="figure-caption">Wheat</figcaption><br>
@@ -57,7 +58,7 @@
 
             </div>
 
-            <div class="figure styleCard" data-style="21, 44, 20, 42, 43, 23" data-order="3">
+            <div class="figure styleCard" data-style="21, 44, 20, 42, 43, 23" data-order="3" id="animateStout">
 
                 <img src="assets/images/stout1.svg" class="card-img-top" alt="Default Bottle">
 
@@ -70,7 +71,7 @@
             <div class="figure styleCard" data-style="59, 60, 61, 62, 65" data-order="4">
 
 
-                <img src="assets/images/belgian1.svg" class="card-img-top" alt="Default Bottle">
+                <img src="assets/images/belgian1.svg" class="card-img-top" alt="Default Bottle" id="animateBelgian">
 
                 <figcaption class="figure-caption">Belgian</figcaption><br>
                 <div id="counterBelgian">X</div>
