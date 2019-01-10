@@ -87,6 +87,64 @@ $(document).ready(function () {
 
     }
 
+    // animations and scrolling to beer list
+
+    $('#animateIpa').on('click', function()
+    {
+        var animationName = 'animated rubberBand';
+        var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
+        $('#animateIpa').addClass(animationName).one(animationEnd,
+        function() {
+            $(this).removeClass(animationName);
+        });
+
+        // working on an animated slow scroll to the beer list on click of each beer,
+        //  currently doesn't scroll down far enough with code commented out below
+        // $('html,body').animate({
+        //     scrollTop: $('#beer-list-div').offset().top},
+        //     'slow');
+    } );
+
+    $('#animateLager').on('click', function()
+    {
+        var animationName = 'animated jello';
+        var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
+        $('#animateLager').addClass(animationName).one(animationEnd,
+        function() {
+            $(this).removeClass(animationName);
+        });
+    } );
+
+    $('#animateWheat').on('click', function()
+    {
+        var animationName = 'animated shake';
+        var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
+        $('#animateWheat').addClass(animationName).one(animationEnd,
+        function() {
+            $(this).removeClass(animationName);
+        });
+    } );
+
+    $('#animateStout').on('click', function()
+    {
+        var animationName = 'animated tada';
+        var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
+        $('#animateStout').addClass(animationName).one(animationEnd,
+        function() {
+            $(this).removeClass(animationName);
+        });
+    } );
+
+    $('#animateBelgian').on('click', function()
+    {
+        var animationName = 'animated swing';
+        var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
+        $('#animateBelgian').addClass(animationName).one(animationEnd,
+        function() {
+            $(this).removeClass(animationName);
+        });
+    } );
+
     $('.styleCard').on('click', function () {
 
         orderNumber = parseInt($(this).attr('data-order'));
