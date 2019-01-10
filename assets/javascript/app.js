@@ -108,7 +108,7 @@ $(document).ready(function () {
 
         //create the shell of the table using Jquery
         $("#beer-list-div").empty();
-        var beerTable = $("<table>");
+        var beerTable = $("<table>").addClass('table');
         var beerTableHeader = $("<thead>");
         beerTable.attr('id', 'beer-table');
         $("#beer-list-div").append(beerTable);
@@ -139,7 +139,7 @@ $(document).ready(function () {
         var recipeTimeBox = $('<td>').addClass('recipeTime' + rowNumber);
         $('.row' + rowNumber).append(recipeImageBox, recipeTimeBox);
         var query = "q=tasty";
-        
+        var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
 
         if ($(this).attr('data-source')==='random') {
             var searchBeerStyle = searchStyleArray[parseInt(rowNumber)];
@@ -155,11 +155,11 @@ $(document).ready(function () {
                 query = "q=shellfish";
             } else {
                 console.log("I went to the else");
-                var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
+                foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
             };            
         } else {
             var query = "q=" + foodQueryArray[orderNumber];
-            var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
+            foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
         }
         
         console.log(foodQueryURL)
@@ -196,7 +196,7 @@ $(document).ready(function () {
             var searchCounter = 0;
 
             $("#beer-list-div").empty();
-            var beerTable = $("<table>");
+            var beerTable = $("<table>").addClass('table');
             var beerTableHeader = $("<thead>");
             beerTable.attr('id', 'beer-table');
             $("#beer-list-div").append(beerTable);
