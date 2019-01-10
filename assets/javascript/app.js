@@ -3,11 +3,12 @@ $(document).ready(function () {
     var antiCORS = 'https://cors-anywhere.herokuapp.com/';
     var recipeNumber = 0;
     var foodQueryArray = ["chicken", "beef", "grains", "beans", "shellfish"];
-    var chickenStyleMatchArray = [1, 30, 31, 164, 172]
-    var beefStyleMatchArray = [80, 93, 97, 99, 101, 103, 126]
-    var grainsStyleMatchArray = [46, 52, 53, 55, 65, 112, 113, 114]
-    var beansStyleMatchArray = [21, 44, 20, 42, 43, 23]
-    var shellfishStyleMatchArray = [59, 60, 61, 62, 65]
+    var chickenStyleMatchArray = [1, 30, 31, 164, 172];
+    var beefStyleMatchArray = [80, 93, 97, 99, 101, 103, 126];
+    var grainsStyleMatchArray = [46, 52, 53, 55, 65, 112, 113, 114];
+    var beansStyleMatchArray = [21, 44, 20, 42, 43, 23];
+    var shellfishStyleMatchArray = [59, 60, 61, 62, 65];
+    var searchFoodQuery = ["tasty","simple","easy","beer","snack"];
     // Make separate food arrays for the matching style IDS
 
     var beerList = [];
@@ -145,7 +146,8 @@ $(document).ready(function () {
         var recipeImageBox = $('<td>').addClass('col-2 recipeImage' + rowNumber);
         var recipeTimeBox = $('<td>').addClass('col-2 recipeTime' + rowNumber);
         $('.row' + rowNumber).append(recipeImageBox, recipeTimeBox);
-        var query = "q=tasty";
+        var randomNum = Math.floor((Math.random() * searchFoodQuery.length) + 0);
+        var query = searchFoodQuery[randomNum];
         var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
 
         if ($(this).attr('data-source') === 'random') {
