@@ -56,7 +56,6 @@ $(document).ready(function () {
 
         while (beerDisplayCounter < numBeersToDisplay) {
             var randomInt = Math.floor((Math.random() * beerObjectArray.length) + 0);
-            console.log(randomInt);
 
             // get the values from the object
             var beerName = beerObjectArray[randomInt].nameDisplay;
@@ -73,8 +72,9 @@ $(document).ready(function () {
             }
             else {
                 var beerDescription = "No Description Available";
-                console.log(beerDescription);
             }
+
+            var beerStyle = beerObjectArray[randomInt].style.id;
 
             var beerABV = beerObjectArray[randomInt].abv;
             var beerPicURL = beerObjectArray[randomInt].labels.medium;
@@ -87,10 +87,13 @@ $(document).ready(function () {
             var newTD = $("<td>").addClass('col-3');
             newTD.append(beerPic)
             newRow.append(newTD);
+
+            newRow.append($("<td>").addClass('col-1').text(beerStyle));
             newRow.append($("<td>").addClass('col-1').text(beerName));
             newRow.append($("<td>").addClass('col-1').text(beerABV));
             newRow.append($("<td>").addClass('col-2').text(beerDescription));
             newRow.append($('<td>').addClass('recipeButton col-1').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
+
 
             $("#beer-table").append(newRow);
 
@@ -170,7 +173,8 @@ $(document).ready(function () {
         var beerStyles = $(this).attr("data-style");
 
         //create an array of the list of styles
-        var beerStylesArray = beerStyles.split(",");
+        var beerStylesArray = [];
+        beerStylesArray = beerStyles.split(",");
 
         //create the shell of the table using Jquery
         $("#beer-list-div").empty();
@@ -179,12 +183,14 @@ $(document).ready(function () {
         beerTable.attr('id', 'beer-table');
         $("#beer-list-div").append(beerTable);
 
-
+        //re-initialize values 
+        beerList = [];
         styleCount = 0;
         totalStyles = beerStylesArray.length;
 
 
         //loop through styles from the html and call buildBeerArray to make the api request for that style
+        console.log(beerStylesArray);
         for (var i = 0; i < beerStylesArray.length; i++) {
             buildBeerArray(beerStylesArray[i]);
         }
