@@ -2,10 +2,17 @@ $(document).ready(function () {
 
     var antiCORS = 'https://cors-anywhere.herokuapp.com/';
     var recipeNumber = 0;
-    var foodQueryArray = ["chicken", "beef", "grains", "beans", "shellfish", "pork"];
-
+    var foodQueryArray = ["chicken", "beef", "grains", "beans", "shellfish"];
+    var chickenStyleMatchArray = [1, 30, 31, 164, 172]
+    var beefStyleMatchArray = [80, 93, 97, 99, 101, 103, 126]
+    var grainsStyleMatchArray = [46, 52, 53, 55, 65, 112 ,113, 114]
+    var beansStyleMatchArray = [21, 44, 20, 42, 43, 23]
+    var shellfishStyleMatchArray = [59, 60, 61, 62, 65]
+    // Make separate food arrays for the matching style IDS
 
     var beerList = [];
+    var searchList = [];
+    var searchStyleArray = [];
     var styleCount = 0;
     var numBeersToDisplay = 5;
     var totalStyles = 0;
@@ -68,7 +75,7 @@ $(document).ready(function () {
             beerPic.attr("src", beerPicURL);
 
             // Create the new row
-            var newRow = $("<tr>");
+            var newRow = $("<tr>").addClass('row' + beerDisplayCounter);
             var newTD = $("<td>");
             newTD.append(beerPic)
             newRow.append(newTD);
@@ -103,7 +110,7 @@ $(document).ready(function () {
 
         //create the shell of the table using Jquery
         $("#beer-list-div").empty();
-        var beerTable = $("<table>");
+        var beerTable = $("<table>").addClass('table');
         var beerTableHeader = $("<thead>");
         beerTable.attr('id', 'beer-table');
         $("#beer-list-div").append(beerTable);
@@ -123,6 +130,7 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.recipeButton', function () {
+        // Add an if to check whether it is a style button click or a search click
 
         // Find a way to make this not go again once you click it, possibly use remove and then add a different <td> onto the end
 
@@ -134,10 +142,30 @@ $(document).ready(function () {
         var recipeImageBox = $('<td>').addClass('recipeImage' + rowNumber);
         var recipeTimeBox = $('<td>').addClass('recipeTime' + rowNumber);
         $('.row' + rowNumber).append(recipeImageBox, recipeTimeBox);
-
-        var query = "q=" + foodQueryArray[orderNumber];
+        var query = "q=tasty";
         var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
 
+        if ($(this).attr('data-source')==='random') {
+            var searchBeerStyle = searchStyleArray[parseInt(rowNumber)];
+            if (chickenStyleMatchArray.includes(searchBeerStyle)) {
+                query = "q=chicken";
+            } else if (beefStyleMatchArray.includes(searchBeerStyle)){
+                query = "q=beef"; 
+            } else if (grainsStyleMatchArray.includes(searchBeerStyle)){
+                query = "q=grains";
+            } else if (beansStyleMatchArray.includes(searchBeerStyle)){
+                query = "q=beans";
+            } else if (shellfishStyleMatchArray.includes(searchBeerStyle)){
+                query = "q=shellfish";
+            } else {
+                console.log("I went to the else");
+                foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
+            };            
+        } else {
+            var query = "q=" + foodQueryArray[orderNumber];
+            foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
+        }
+        
         console.log(foodQueryURL)
 
         $.ajax({
@@ -166,8 +194,71 @@ $(document).ready(function () {
         event.preventDefault();
 
         var searchValue = $('#searchBar').val().trim();
-        var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3'
+        if (searchValue.length > 0) {
 
+            var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3';
+            var searchCounter = 0;
+
+            $("#beer-list-div").empty();
+            var beerTable = $("<table>").addClass('table');
+            var beerTableHeader = $("<thead>");
+            beerTable.attr('id', 'beer-table');
+            $("#beer-list-div").append(beerTable);
+
+            $.ajax({
+                url: beerSearchURL,
+                method: "GET"
+            }).then(function (searchResponse) {
+                console.log(searchResponse);
+
+                for (var i = 0; i < searchResponse.data.length; i++) {
+                    searchList.push(searchResponse.data[i]);
+                    searchStyleArray.push(searchResponse.data[i].styleId);
+                };
+                if (searchList.length > 5) {
+                    for (var j = 0; j < 5; j++) {
+                        console.log(searchList);
+                        console.log("the greater than 5 ran");
+                        var beerName = searchList[j].nameDisplay;
+                        var beerDescription = searchList[j].description;
+                        var beerABV = searchList[j].abv;
+                        
+                        var newRow = $("<tr>").addClass('row' + searchCounter);
+                        var newTD = $("<td>");
+
+                        newRow.append(newTD);
+                        newRow.append($("<td>").text(beerName));
+                        newRow.append($("<td>").text(beerABV));
+                        newRow.append($("<td>").text(beerDescription));
+                        // Add another data-style to specifiy this is the search results
+                        newRow.append($('<td>').addClass('recipeButton').attr('data-counter', searchCounter).attr('data-source','random').text('Click for a Recipe!'));
+
+                        $("#beer-table").append(newRow);
+                        console.log(beerName);
+
+                        searchCounter++;
+                    }
+                } else if (searchList.length > 0) {
+                    for (var j = 0; j < searchList.length; j++) {
+                        var beerName = searchList[j].nameDisplay;
+                        var beerDescription = searchList[j].description;
+                        var beerABV = searchList[j].abv;
+
+                        var newRow = $("<tr>").addClass('row' + searchCounter);
+                        var newTD = $("<td>");
+
+                        newRow.append(newTD);
+                        newRow.append($("<td>").text(beerName));
+                        newRow.append($("<td>").text(beerABV));
+                        newRow.append($("<td>").text(beerDescription));
+                        newRow.append($('<td>').addClass('recipeButton').attr('data-counter', searchCounter).attr('data-source','random').text('Click for a Recipe!'));
+
+                        $("#beer-table").append(newRow);
+
+                        searchCounter++;
+                    }
+                }
+            });
+        }
     });
-
 });
