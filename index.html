@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Beer Genie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
@@ -34,7 +35,7 @@
         <div class="row justify-content-center">
 
             <div class="col-2-md mx-auto">
-                <div class="figure styleCard" data-style="1,30,31,164,172" data-order="0" data-style="ipaCounter" id="animateIpa">
+                <div class="figure styleCard" data-style="1,30,31,164,172" data-order="0" data-name="ipaCounter" id="animateIpa">
                     <img src="assets/images/ipa1.svg" class="card-img-top" alt="Default Bottle">
 
 
@@ -44,7 +45,7 @@
             </div>
 
             <div class="col-2-md mx-auto">
-                <div class="figure styleCard " data-style="80,93,97,99,101,103,126" data-order="1" data-style="lagerCounter" id="animateLager">
+                <div class="figure styleCard " data-style="80,93,97,99,101,103,126" data-order="1" data-name="lagerCounter" id="animateLager">
                     <img src="assets/images/lager1.svg" class="card-img-top" alt="Default Bottle">
 
                     <figcaption class="figure-caption">Lager</figcaption><br>
@@ -54,7 +55,7 @@
             </div>
 
             <div class="col-2-md mx-auto">
-                <div class="figure styleCard" data-style="46, 52, 53, 55, 65, 112, 113, 114" data-order="2" data-style="wheatCounter" id="animateWheat">
+                <div class="figure styleCard" data-style="46, 52, 53, 55, 65, 112, 113, 114" data-order="2" data-name="wheatCounter" id="animateWheat">
                     <img src="assets/images/wheat1.svg" class="card-img-top" alt="Default Bottle">
 
                     <figcaption class="figure-caption">Wheat</figcaption><br>
@@ -63,7 +64,7 @@
             </div>
 
             <div class="col-2-md mx-auto">
-                <div class="figure styleCard" data-style="21, 44, 20, 42, 43, 23" data-order="3" data-style="stoutCounter" id="animateStout">
+                <div class="figure styleCard" data-style="21, 44, 20, 42, 43, 23" data-order="3" data-name="stoutCounter" id="animateStout">
 
                     <img src="assets/images/stout1.svg" class="card-img-top" alt="Default Bottle">
 
@@ -74,7 +75,7 @@
             </div>
 
             <div class="col-2-md mx-auto">
-                <div class="figure styleCard" data-style="59, 60, 61, 62, 65" data-order="4" data-style="belgianCounter">
+                <div class="figure styleCard" data-style="59, 60, 61, 62, 65" data-order="4" data-name="belgianCounter">
 
 
                     <img src="assets/images/belgian1.svg" class="card-img-top" alt="Default Bottle" id="animateBelgian">
