@@ -84,7 +84,7 @@ $(document).ready(function () {
 
             // Create the new row
             var newRow = $("<tr>").addClass('row row' + beerDisplayCounter);
-            var newTD = $("<td>").addClass('col-3');
+            var newTD = $("<td>").addClass('col-2');
             newTD.append(beerPic)
             newRow.append(newTD);
 
