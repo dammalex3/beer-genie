@@ -68,4 +68,9 @@
 }
 .mx-auto{
     font-family: 'Open Sans', sans-serif;
+    color: rgb(42, 42, 42);
+}
+.form-group{
+    font-family: 'Open Sans', sans-serif;
+    color: rgb(42, 42, 42);
 }
