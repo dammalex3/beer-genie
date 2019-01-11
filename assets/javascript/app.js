@@ -84,15 +84,14 @@ $(document).ready(function () {
 
             // Create the new row
             var newRow = $("<tr>").addClass('row row' + beerDisplayCounter);
-            var newTD = $("<td>").addClass('col-2');
+            var newTD = $("<td>").addClass('col-9 col-lg-3');
             newTD.append(beerPic)
             newRow.append(newTD);
 
-            newRow.append($("<td>").addClass('col-1').text(beerStyle));
-            newRow.append($("<td>").addClass('col-1').text(beerName));
-            newRow.append($("<td>").addClass('col-1').text(beerABV));
-            newRow.append($("<td>").addClass('col-2').text(beerDescription));
-            newRow.append($('<td>').addClass('recipeButton col-1').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
+            newRow.append($("<td>").addClass('col-3 col-lg-1').text(beerName));
+            newRow.append($("<td>").addClass('col-2 col-lg-1').text(beerABV));
+            newRow.append($("<td>").addClass('col-4 col-lg-2').text(beerDescription));
+            newRow.append($('<td>').addClass('recipeButton col-3 col-lg-1').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
 
 
             $("#beer-table").append(newRow);
@@ -165,7 +164,6 @@ $(document).ready(function () {
     $('.styleCard').on('click', function () {
 
         orderNumber = parseInt($(this).attr('data-order'));
-
         // This portion will move to a separate onclick that delegates to the html body, that way we can use an element we make when the beer API is called and we populate the table.
 
 
@@ -207,9 +205,9 @@ $(document).ready(function () {
         // This line keeps you from requesting a recipe each time you click, it will need t
         $(this).removeClass('recipeButton').addClass('recipeSpace');
         var rowNumber = parseInt($(this).attr('data-counter'));
-        var recipeImageBox = $('<td>').addClass('col-2 recipeImage' + rowNumber);
-        var recipeTimeBox = $('<td>').addClass('col-2 recipeTime' + rowNumber);
-        $('.row' + rowNumber).append(recipeImageBox, recipeTimeBox);
+        var recipeTimeBox = $('<td>').addClass('col-3 col-lg-2 recipeTime' + rowNumber);
+        var recipeImageBox = $('<td>').addClass('col-4 mx-auto col-lg-2 recipeImage' + rowNumber);
+        $('.row' + rowNumber).append(recipeTimeBox, recipeImageBox);
         var randomNum = Math.floor((Math.random() * searchFoodQuery.length) + 0);
         var query = searchFoodQuery[randomNum];
         var foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
