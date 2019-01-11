@@ -9,7 +9,7 @@ $(document).ready(function () {
     var beansStyleMatchArray = [21, 44, 20, 42, 43, 23];
     var shellfishStyleMatchArray = [59, 60, 61, 62, 65];
 
-    var searchFoodQuery = ["q=tasty","q=simple","q=easy","q=beer","q=snack"];
+    var searchFoodQuery = ["q=tasty", "q=simple", "q=easy", "q=beer", "q=snack"];
 
     // Make separate food arrays for the matching style IDS
 
@@ -19,13 +19,46 @@ $(document).ready(function () {
     var styleCount = 0;
     var numBeersToDisplay = 5;
     var totalStyles = 0;
+    var ipaCounter = 0;
+    var stoutCounter = 0;
+    var wheatCounter = 0;
+    var belgianCounter = 0;
+    var lagerCounter = 0;
 
     var getRandomRecipe = function () {
         recipeNumber = Math.floor(Math.random() * 50);
     }
     var orderNumber = 0;
 
+    var config = {
+        apiKey: "AIzaSyBWG3_TdhJRlK6t4I3Bw920OLnYQtXpXug",
+        authDomain: "beer-genie-group-7.firebaseapp.com",
+        databaseURL: "https://beer-genie-group-7.firebaseio.com",
+        projectId: "beer-genie-group-7",
+        storageBucket: "beer-genie-group-7.appspot.com",
+        messagingSenderId: "901350575551"
+      };
+      firebase.initializeApp(config);
 
+    var database = firebase.database();
+
+    database.ref().on("value", function (snapshot) {
+        console.log(snapshot);
+        console.log(JSON.stringify(snapshot))
+        ipaCounter = snapshot.val().ipaCounter;
+        stoutCounter = snapshot.val().stoutCounter;
+        wheatCounter = snapshot.val().wheatCounter;
+        belgianCounter = snapshot.val().belgianCounter;
+        lagerCounter = snapshot.val().lagerCounter;
+        
+        $("#ipaCounter").text(ipaCounter);
+        $("#wheatCounter").text(wheatCounter);
+        $("#stoutCounter").text(stoutCounter);
+        $("#lagerCounter").text(lagerCounter);
+        $("#belgianCounter").text(belgianCounter);
+    }, function (error) {
+        console.log("I had an oopsie");
+    });
 
     //calls api and builds and array of beer objects
     function buildBeerArray(beerStyleID) {
@@ -107,64 +140,92 @@ $(document).ready(function () {
 
     // animations and scrolling to beer list
 
-    $('#animateIpa').on('click', function()
-    {
+    $('#animateIpa').on('click', function () {
         var animationName = 'animated rubberBand';
         var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
         $('#animateIpa').addClass(animationName).one(animationEnd,
-        function() {
-            $(this).removeClass(animationName);
-        });
+            function () {
+                $(this).removeClass(animationName);
+            });
 
         // working on an animated slow scroll to the beer list on click of each beer,
         //  currently doesn't scroll down far enough with code commented out below
         // $('html,body').animate({
         //     scrollTop: $('#beer-list-div').offset().top},
         //     'slow');
-    } );
+    });
 
-    $('#animateLager').on('click', function()
-    {
+    $('#animateLager').on('click', function () {
         var animationName = 'animated jello';
         var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
         $('#animateLager').addClass(animationName).one(animationEnd,
-        function() {
-            $(this).removeClass(animationName);
-        });
-    } );
+            function () {
+                $(this).removeClass(animationName);
+            });
+    });
 
-    $('#animateWheat').on('click', function()
-    {
+    $('#animateWheat').on('click', function () {
         var animationName = 'animated shake';
         var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
         $('#animateWheat').addClass(animationName).one(animationEnd,
-        function() {
-            $(this).removeClass(animationName);
-        });
-    } );
+            function () {
+                $(this).removeClass(animationName);
+            });
+    });
 
-    $('#animateStout').on('click', function()
-    {
+    $('#animateStout').on('click', function () {
         var animationName = 'animated tada';
         var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
         $('#animateStout').addClass(animationName).one(animationEnd,
-        function() {
-            $(this).removeClass(animationName);
-        });
-    } );
+            function () {
+                $(this).removeClass(animationName);
+            });
+    });
 
-    $('#animateBelgian').on('click', function()
-    {
+    $('#animateBelgian').on('click', function () {
         var animationName = 'animated swing';
         var animationEnd = 'animationend oAnimationEnd mozAnimationEnd webkitAnimationEnd'
         $('#animateBelgian').addClass(animationName).one(animationEnd,
-        function() {
-            $(this).removeClass(animationName);
-        });
-    } );
+            function () {
+                $(this).removeClass(animationName);
+            });
+    });
 
     $('.styleCard').on('click', function () {
 
+        
+
+        var counterStyle = $(this).attr('data-name');
+        
+        console.log(counterStyle);
+
+        console.log("I'm here");
+        switch ($(this).attr('data-name')){
+            case "ipaCounter": 
+                ipaCounter++;
+                console.log(ipaCounter);
+                break;
+            case "stoutCounter":
+                stoutCounter++;
+                break;
+            case "wheatCounter":
+                wheatCounter++;
+                break;
+            case "belgianCounter":
+                belgianCounter++;
+                break;
+            case "lagerCounter":
+                lagerCounter++;
+        };
+
+        database.ref().set({
+            ipaCounter: ipaCounter,
+            wheatCounter: wheatCounter,
+            belgianCounter: belgianCounter,
+            lagerCounter: lagerCounter,
+            stoutCounter: stoutCounter
+        });
+        
         orderNumber = parseInt($(this).attr('data-order'));
         // This portion will move to a separate onclick that delegates to the html body, that way we can use an element we make when the beer API is called and we populate the table.
 
@@ -265,15 +326,15 @@ $(document).ready(function () {
             if (specialChars.indexOf(string.charAt(i)) != -1) {
                 return false;
             }
-         }
-         return true;
-     }
+        }
+        return true;
+    }
 
     $('.searchButton').on('click', function () {
         event.preventDefault();
 
         var searchValue = $('#searchBar').val().trim();
-        if (searchValue.length > 0 && specialCharsCheck(searchValue)==true) {
+        if (searchValue.length > 0 && specialCharsCheck(searchValue) == true) {
 
             var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3';
             var searchCounter = 0;
@@ -356,13 +417,13 @@ $(document).ready(function () {
             $("#validation-alert").addClass("alert alert-warning alert-dismissible fade show");
             $("#validation-alert").text("No special characters allowed in search. Please try again.")
 
-            setTimeout(function() {
+            setTimeout(function () {
                 $("#validation-alert").removeClass("alert alert-warning alert-dismissible fade show");
                 $("#validation-alert").empty();
                 $("#validation-alert").close();
-                
+
             }, 2000);
-                
+
         }
     });
 });
