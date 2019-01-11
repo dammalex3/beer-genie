@@ -1,3 +1,6 @@
+*{font-family: 'Montserrat', sans-serif;
+
+color: rgb(42, 42, 42);}
 .container{
     text-align: center;
     
@@ -40,7 +43,8 @@
     left: 0;
     right: 0;
     height: 50px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+
 }
     .heading{
         font-family: 'Homemade Apple', cursive;
@@ -52,7 +56,8 @@
     text-align: center;
 }
 .lead{
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+
 }
 .styleCard
 {
@@ -67,10 +72,18 @@
     text-align: center;
 }
 .mx-auto{
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+
     color: rgb(42, 42, 42);
 }
 .form-group{
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
+
     color: rgb(42, 42, 42);
+}
+.beer-list-div{
+    font-family: 'Montserrat', sans-serif;
+
+    color: rgb(42, 42, 42);
+
 }
