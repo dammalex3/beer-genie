@@ -118,15 +118,15 @@ $(document).ready(function () {
             beerPic.attr("src", beerPicURL);
 
             // Create the new row
-            var newRow = $("<tr>").addClass('row row' + beerDisplayCounter);
-            var newTD = $("<td>").addClass('col-9 col-lg-3 mx-auto');
+            var newRow = $("<tr>").addClass('row justify-content-center row' + beerDisplayCounter);
+            var newTD = $("<td>").addClass('col-9 col-lg-3 ');
             newTD.append(beerPic)
             newRow.append(newTD);
 
-            newRow.append($("<td>").addClass('col-3 col-lg-1 mx-auto').text(beerName));
-            newRow.append($("<td>").addClass('col-2 col-lg-1 mx-auto').text(beerABV));
-            newRow.append($("<td>").addClass('col-4 col-lg-2 mx-auto').text(beerDescription));
-            newRow.append($('<td>').addClass('recipeButton col-3 col-lg-1 mx-auto').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
+            newRow.append($("<td>").addClass('col-3 col-lg-1').text(beerName));
+            newRow.append($("<td>").addClass('col-2 col-lg-1').text("ABV: "+beerABV));
+            newRow.append($("<td>").addClass('col-4 col-lg-2').text(beerDescription));
+            newRow.append($('<td>').addClass('recipeButton col-3 col-lg-1').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
 
 
             $("#beer-table").append(newRow);
