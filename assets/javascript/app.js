@@ -259,11 +259,21 @@ $(document).ready(function () {
 
     });
 
+    function specialCharsCheck(string) {
+        var specialChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
+        for (var i = 0; i < string.length; i++) {
+            if (specialChars.indexOf(string.charAt(i)) != -1) {
+                return false;
+            }
+         }
+         return true;
+     }
+
     $('.searchButton').on('click', function () {
         event.preventDefault();
 
         var searchValue = $('#searchBar').val().trim();
-        if (searchValue.length > 0) {
+        if (searchValue.length > 0 && specialCharsCheck(searchValue)==true) {
 
             var beerSearchURL = antiCORS + 'https://api.brewerydb.com/v2/search?q=' + searchValue + '&type=Beer&key=ca93fb5030f16f2b478658d317dc88a3';
             var searchCounter = 0;
@@ -340,6 +350,19 @@ $(document).ready(function () {
                     }
                 }
             });
+        }
+        //else for when input validation fails
+        else {
+            $("#validation-alert").addClass("alert alert-warning alert-dismissible fade show");
+            $("#validation-alert").text("No special characters allowed in search. Please try again.")
+
+            setTimeout(function() {
+                $("#validation-alert").removeClass("alert alert-warning alert-dismissible fade show");
+                $("#validation-alert").empty();
+                $("#validation-alert").close();
+                
+            }, 2000);
+                
         }
     });
 });
