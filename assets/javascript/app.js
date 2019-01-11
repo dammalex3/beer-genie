@@ -8,7 +8,7 @@ $(document).ready(function () {
     var grainsStyleMatchArray = [46, 52, 53, 55, 65, 112, 113, 114];
     var beansStyleMatchArray = [21, 44, 20, 42, 43, 23];
     var shellfishStyleMatchArray = [59, 60, 61, 62, 65];
-    var searchFoodQuery = ["tasty","simple","easy","beer","snack"];
+    var searchFoodQuery = ["q=tasty","q=simple","q=easy","q=beer","q=snack"];
     // Make separate food arrays for the matching style IDS
 
     var beerList = [];
