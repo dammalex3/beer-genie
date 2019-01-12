@@ -43,8 +43,6 @@ $(document).ready(function () {
     var database = firebase.database();
 
     database.ref().on("value", function (snapshot) {
-        console.log(snapshot);
-        console.log(JSON.stringify(snapshot))
         ipaCounter = snapshot.val().ipaCounter;
         stoutCounter = snapshot.val().stoutCounter;
         wheatCounter = snapshot.val().wheatCounter;
@@ -57,7 +55,6 @@ $(document).ready(function () {
         $("#lagerCounter").text(lagerCounter);
         $("#belgianCounter").text(belgianCounter);
     }, function (error) {
-        console.log("I had an oopsie");
     });
 
     //calls api and builds and array of beer objects
@@ -98,7 +95,6 @@ $(document).ready(function () {
             if (beerObjectArray[randomInt].description != null) {
                 var beerDescription;
                 var fullBeerDescription = beerObjectArray[randomInt].description;
-                console.log(fullBeerDescription);
                 if (fullBeerDescription.length > 200) {
                     beerDescription = fullBeerDescription.slice(0, 199) + '...';
                 } else {
@@ -193,17 +189,10 @@ $(document).ready(function () {
 
     $('.styleCard').on('click', function () {
 
-
-
         var counterStyle = $(this).attr('data-name');
-
-        console.log(counterStyle);
-
-        console.log("I'm here");
         switch ($(this).attr('data-name')) {
             case "ipaCounter":
                 ipaCounter++;
-                console.log(ipaCounter);
                 break;
             case "stoutCounter":
                 stoutCounter++;
@@ -251,7 +240,7 @@ $(document).ready(function () {
 
 
         //loop through styles from the html and call buildBeerArray to make the api request for that style
-        console.log(beerStylesArray);
+        
         for (var i = 0; i < beerStylesArray.length; i++) {
             buildBeerArray(beerStylesArray[i]);
         }
@@ -288,7 +277,6 @@ $(document).ready(function () {
             } else if (shellfishStyleMatchArray.includes(searchBeerStyle)) {
                 query = "q=shellfish";
             } else {
-                console.log("I went to the else");
                 foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
             };
         } else {
@@ -296,15 +284,11 @@ $(document).ready(function () {
             foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
         }
 
-        console.log(foodQueryURL)
-
         $.ajax({
             url: foodQueryURL,
             method: "GET"
         }).then(function (response) {
-            console.log(response);
             var data = response.hits;
-            console.log(data.length);
             var recipeLink = data[recipeNumber].recipe.url;
             $('.recipeSpace').html('<a href="' + recipeLink + '" target="_blank">' + data[recipeNumber].recipe.label + '</a>').removeClass('recipeSpace mx-auto');
             $('.recipeImage' + rowNumber).html('<img src="' + data[recipeNumber].recipe.image + '" alt="' + data[recipeNumber].recipe.label + ' height="100" width="100">').removeClass('mx-auto');
@@ -313,9 +297,6 @@ $(document).ready(function () {
             } else {
                 $('.recipeTime' + rowNumber).text("Sorry, we're not sure how long this one will take").removeClass('mx-auto');
             };
-            console.log(data[recipeNumber].recipe.url);
-            console.log(data[recipeNumber].recipe.ingredients);
-            console.log(data[recipeNumber].recipe.image);
         });
 
     });
@@ -349,19 +330,14 @@ $(document).ready(function () {
                 url: beerSearchURL,
                 method: "GET"
             }).then(function (searchResponse) {
-                console.log(searchResponse);
-
                 if (searchResponse.data != null) {
 
                     for (var i = 0; i < searchResponse.data.length; i++) {
                         searchList.push(searchResponse.data[i]);
                         searchStyleArray.push(searchResponse.data[i].styleId);
                     };
-                    console.log(searchList)
                     if (searchList.length > 5) {
                         for (var j = 0; j < 5; j++) {
-                            console.log(searchList);
-                            console.log("the greater than 5 ran");
                             var beerName = searchList[j].nameDisplay;
                             var beerABV = searchList[j].abv;
 
@@ -389,8 +365,6 @@ $(document).ready(function () {
                             newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
 
                             $("#beer-table").append(newRow);
-                            console.log(beerName);
-
                             searchCounter++;
                         }
                     } else if (searchList.length > 0) {
