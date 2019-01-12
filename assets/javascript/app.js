@@ -124,7 +124,7 @@ $(document).ready(function () {
             newRow.append(newTD);
 
             newRow.append($("<td>").addClass('col-3 col-lg-1').text(beerName));
-            newRow.append($("<td>").addClass('col-2 col-lg-1').text("ABV: "+beerABV));
+            newRow.append($("<td>").addClass('col-2 col-lg-1').text("ABV: " + beerABV));
             newRow.append($("<td>").addClass('col-4 col-lg-2').text(beerDescription));
             newRow.append($('<td>').addClass('recipeButton col-3 col-lg-1').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
 
@@ -351,68 +351,97 @@ $(document).ready(function () {
             }).then(function (searchResponse) {
                 console.log(searchResponse);
 
-                for (var i = 0; i < searchResponse.data.length; i++) {
-                    searchList.push(searchResponse.data[i]);
-                    searchStyleArray.push(searchResponse.data[i].styleId);
-                };
-                if (searchList.length > 5) {
-                    for (var j = 0; j < 5; j++) {
-                        console.log(searchList);
-                        console.log("the greater than 5 ran");
-                        var beerName = searchList[j].nameDisplay;
-                        var fullBeerDescription = searchList[j].description;
-                        var beerDescription;
-                        var beerABV = searchList[j].abv;
+                if (searchResponse.data != null) {
 
-                        if (fullBeerDescription.length > 200) {
-                            beerDescription = fullBeerDescription.slice(0, 199) + '...';
-                        } else {
-                            beerDescription = fullBeerDescription;
+                    for (var i = 0; i < searchResponse.data.length; i++) {
+                        searchList.push(searchResponse.data[i]);
+                        searchStyleArray.push(searchResponse.data[i].styleId);
+                    };
+                    console.log(searchList)
+                    if (searchList.length > 5) {
+                        for (var j = 0; j < 5; j++) {
+                            console.log(searchList);
+                            console.log("the greater than 5 ran");
+                            var beerName = searchList[j].nameDisplay;
+                            var beerABV = searchList[j].abv;
+
+                            if (searchList[j].description != null) {
+                                var fullBeerDescription = searchList[j].description;
+                                var beerDescription;
+                                if (fullBeerDescription.length > 200) {
+                                    beerDescription = fullBeerDescription.slice(0, 199) + '...';
+                                } else {
+                                    beerDescription = fullBeerDescription;
+                                };
+                            } else {
+                                beerDescription = "No Description Available";
+                            }
+
+
+                            var newRow = $("<tr>").addClass('row row' + searchCounter);
+                            var newTD = $("<td>");
+
+                            newRow.append(newTD);
+                            newRow.append($("<td>").addClass('col-2').text(beerName));
+                            newRow.append($("<td>").addClass('col-2').text(beerABV));
+                            newRow.append($("<td>").addClass('col-3').text(beerDescription));
+                            // Add another data-style to specifiy this is the search results
+                            newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
+
+                            $("#beer-table").append(newRow);
+                            console.log(beerName);
+
+                            searchCounter++;
                         }
-                        var newRow = $("<tr>").addClass('row row' + searchCounter);
-                        var newTD = $("<td>");
+                    } else if (searchList.length > 0) {
+                        for (var j = 0; j < searchList.length; j++) {
+                            var beerName = searchList[j].nameDisplay;
+                            var fullBeerDescription = searchList[j].description;
+                            var beerDescription;
+                            var beerABV = searchList[j].abv;
 
-                        newRow.append(newTD);
-                        newRow.append($("<td>").addClass('col-2').text(beerName));
-                        newRow.append($("<td>").addClass('col-2').text(beerABV));
-                        newRow.append($("<td>").addClass('col-3').text(beerDescription));
-                        // Add another data-style to specifiy this is the search results
-                        newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
+                            if (fullBeerDescription.length > 200) {
+                                beerDescription = fullBeerDescription.slice(0, 199) + '...';
+                            } else {
+                                beerDescription = fullBeerDescription;
+                            }
+                            var newRow = $("<tr>").addClass('row row' + searchCounter);
+                            var newTD = $("<td>");
 
-                        $("#beer-table").append(newRow);
-                        console.log(beerName);
+                            newRow.append(newTD);
+                            newRow.append($("<td>").addClass('col-2').text(beerName));
+                            newRow.append($("<td>").addClass('col-2').text(beerABV));
+                            newRow.append($("<td>").addClass('col-2').text(beerDescription));
+                            newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
 
-                        searchCounter++;
-                    }
-                } else if (searchList.length > 0) {
-                    for (var j = 0; j < searchList.length; j++) {
-                        var beerName = searchList[j].nameDisplay;
-                        var fullBeerDescription = searchList[j].description;
-                        var beerDescription;
-                        var beerABV = searchList[j].abv;
+                            $("#beer-table").append(newRow);
 
-                        if (fullBeerDescription.length > 200) {
-                            beerDescription = fullBeerDescription.slice(0, 199) + '...';
-                        } else {
-                            beerDescription = fullBeerDescription;
+                            searchCounter++;
                         }
-                        var newRow = $("<tr>").addClass('row row' + searchCounter);
-                        var newTD = $("<td>");
-
-                        newRow.append(newTD);
-                        newRow.append($("<td>").addClass('col-2').text(beerName));
-                        newRow.append($("<td>").addClass('col-2').text(beerABV));
-                        newRow.append($("<td>").addClass('col-2').text(beerDescription));
-                        newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
-
-                        $("#beer-table").append(newRow);
-
-                        searchCounter++;
                     }
+                } else {
+                    $("#validation-alert").addClass("alert alert-warning alert-dismissible fade show");
+                    $("#validation-alert").text("Sorry, our database didn't find anything for that beer.")
+
+                    setTimeout(function () {
+                        $("#validation-alert").removeClass("alert alert-warning alert-dismissible fade show");
+                        $("#validation-alert").empty();
+
+                    }, 2000);
                 }
             });
         }
         //else for when input validation fails
+        else if (searchValue.length < 1) {
+            $("#validation-alert").addClass("alert alert-warning alert-dismissible fade show");
+            $("#validation-alert").text("It looks like you forgot to enter a search term. Please try again.")
+
+            setTimeout(function () {
+                $("#validation-alert").removeClass("alert alert-warning alert-dismissible fade show");
+                $("#validation-alert").empty();
+
+            }, 2000);
+        }
         else {
             $("#validation-alert").addClass("alert alert-warning alert-dismissible fade show");
             $("#validation-alert").text("No special characters allowed in search. Please try again.")
