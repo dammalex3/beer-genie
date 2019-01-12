@@ -37,8 +37,8 @@ $(document).ready(function () {
         projectId: "beer-genie-group-7",
         storageBucket: "beer-genie-group-7.appspot.com",
         messagingSenderId: "901350575551"
-      };
-      firebase.initializeApp(config);
+    };
+    firebase.initializeApp(config);
 
     var database = firebase.database();
 
@@ -50,7 +50,7 @@ $(document).ready(function () {
         wheatCounter = snapshot.val().wheatCounter;
         belgianCounter = snapshot.val().belgianCounter;
         lagerCounter = snapshot.val().lagerCounter;
-        
+
         $("#ipaCounter").text(ipaCounter);
         $("#wheatCounter").text(wheatCounter);
         $("#stoutCounter").text(stoutCounter);
@@ -118,13 +118,13 @@ $(document).ready(function () {
             beerPic.attr("src", beerPicURL);
 
             // Create the new row
-            var newRow = $("<tr>").addClass('row row' + beerDisplayCounter);
-            var newTD = $("<td>").addClass('col-9 col-lg-3');
+            var newRow = $("<tr>").addClass('row justify-content-center row' + beerDisplayCounter);
+            var newTD = $("<td>").addClass('col-9 col-lg-3 ');
             newTD.append(beerPic)
             newRow.append(newTD);
 
             newRow.append($("<td>").addClass('col-3 col-lg-1').text(beerName));
-            newRow.append($("<td>").addClass('col-2 col-lg-1').text(beerABV));
+            newRow.append($("<td>").addClass('col-2 col-lg-1').text("ABV: "+beerABV));
             newRow.append($("<td>").addClass('col-4 col-lg-2').text(beerDescription));
             newRow.append($('<td>').addClass('recipeButton col-3 col-lg-1').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
 
@@ -193,15 +193,15 @@ $(document).ready(function () {
 
     $('.styleCard').on('click', function () {
 
-        
+
 
         var counterStyle = $(this).attr('data-name');
-        
+
         console.log(counterStyle);
 
         console.log("I'm here");
-        switch ($(this).attr('data-name')){
-            case "ipaCounter": 
+        switch ($(this).attr('data-name')) {
+            case "ipaCounter":
                 ipaCounter++;
                 console.log(ipaCounter);
                 break;
@@ -225,7 +225,7 @@ $(document).ready(function () {
             lagerCounter: lagerCounter,
             stoutCounter: stoutCounter
         });
-        
+
         orderNumber = parseInt($(this).attr('data-order'));
         // This portion will move to a separate onclick that delegates to the html body, that way we can use an element we make when the beer API is called and we populate the table.
 
@@ -306,12 +306,12 @@ $(document).ready(function () {
             var data = response.hits;
             console.log(data.length);
             var recipeLink = data[recipeNumber].recipe.url;
-            $('.recipeSpace').html('<a href="' + recipeLink + '" target="_blank">' + data[recipeNumber].recipe.label + '</a>').removeClass('recipeSpace');
-            $('.recipeImage' + rowNumber).html('<img src="' + data[recipeNumber].recipe.image + '" alt="' + data[recipeNumber].recipe.label + ' height="100" width="100">');
+            $('.recipeSpace').html('<a href="' + recipeLink + '" target="_blank">' + data[recipeNumber].recipe.label + '</a>').removeClass('recipeSpace mx-auto');
+            $('.recipeImage' + rowNumber).html('<img src="' + data[recipeNumber].recipe.image + '" alt="' + data[recipeNumber].recipe.label + ' height="100" width="100">').removeClass('mx-auto');
             if (data[recipeNumber].recipe.totalTime != "0") {
-                $('.recipeTime' + rowNumber).text('Approximate cook time: ' + data[recipeNumber].recipe.totalTime + ' minutes');
+                $('.recipeTime' + rowNumber).text('Approximate cook time: ' + data[recipeNumber].recipe.totalTime + ' minutes').removeClass('mx-auto');
             } else {
-                $('.recipeTime' + rowNumber).text("Sorry, we're not sure how long this one will take");
+                $('.recipeTime' + rowNumber).text("Sorry, we're not sure how long this one will take").removeClass('mx-auto');
             };
             console.log(data[recipeNumber].recipe.url);
             console.log(data[recipeNumber].recipe.ingredients);
@@ -420,7 +420,6 @@ $(document).ready(function () {
             setTimeout(function () {
                 $("#validation-alert").removeClass("alert alert-warning alert-dismissible fade show");
                 $("#validation-alert").empty();
-                $("#validation-alert").close();
 
             }, 2000);
 
