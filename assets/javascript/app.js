@@ -122,7 +122,13 @@ $(document).ready(function () {
             newRow.append($("<td>").addClass('col-3 col-lg-1').text(beerName));
             newRow.append($("<td>").addClass('col-2 col-lg-1').text("ABV: " + beerABV));
             newRow.append($("<td>").addClass('col-4 col-lg-2').text(beerDescription));
-            newRow.append($('<td>').addClass('recipeButton col-3 col-lg-1').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
+            var recipeTd = $('<td>').addClass('recipeButton col-3 col-lg-1').attr('data-counter', beerDisplayCounter);
+            var recipeFigure = $('<figure>');
+
+            recipeFigure.append($('<img src="assets/images/pickle.PNG">'));
+            recipeFigure.append($('<figcaption>').addClass('figure-caption').text('Click me for a Recipe!'));
+            recipeTd.append(recipeFigure);
+            newRow.append(recipeTd);
 
 
             $("#beer-table").append(newRow);
