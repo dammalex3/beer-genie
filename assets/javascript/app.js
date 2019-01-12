@@ -37,27 +37,24 @@ $(document).ready(function () {
         projectId: "beer-genie-group-7",
         storageBucket: "beer-genie-group-7.appspot.com",
         messagingSenderId: "901350575551"
-      };
-      firebase.initializeApp(config);
+    };
+    firebase.initializeApp(config);
 
     var database = firebase.database();
 
     database.ref().on("value", function (snapshot) {
-        console.log(snapshot);
-        console.log(JSON.stringify(snapshot))
         ipaCounter = snapshot.val().ipaCounter;
         stoutCounter = snapshot.val().stoutCounter;
         wheatCounter = snapshot.val().wheatCounter;
         belgianCounter = snapshot.val().belgianCounter;
         lagerCounter = snapshot.val().lagerCounter;
-        
+
         $("#ipaCounter").text(ipaCounter);
         $("#wheatCounter").text(wheatCounter);
         $("#stoutCounter").text(stoutCounter);
         $("#lagerCounter").text(lagerCounter);
         $("#belgianCounter").text(belgianCounter);
     }, function (error) {
-        console.log("I had an oopsie");
     });
 
     //calls api and builds and array of beer objects
@@ -98,7 +95,6 @@ $(document).ready(function () {
             if (beerObjectArray[randomInt].description != null) {
                 var beerDescription;
                 var fullBeerDescription = beerObjectArray[randomInt].description;
-                console.log(fullBeerDescription);
                 if (fullBeerDescription.length > 200) {
                     beerDescription = fullBeerDescription.slice(0, 199) + '...';
                 } else {
@@ -118,13 +114,13 @@ $(document).ready(function () {
             beerPic.attr("src", beerPicURL);
 
             // Create the new row
-            var newRow = $("<tr>").addClass('row row' + beerDisplayCounter);
-            var newTD = $("<td>").addClass('col-9 col-lg-3');
+            var newRow = $("<tr>").addClass('row justify-content-center row' + beerDisplayCounter);
+            var newTD = $("<td>").addClass('col-9 col-lg-3 ');
             newTD.append(beerPic)
             newRow.append(newTD);
 
             newRow.append($("<td>").addClass('col-3 col-lg-1').text(beerName));
-            newRow.append($("<td>").addClass('col-2 col-lg-1').text(beerABV));
+            newRow.append($("<td>").addClass('col-2 col-lg-1').text("ABV: " + beerABV));
             newRow.append($("<td>").addClass('col-4 col-lg-2').text(beerDescription));
             newRow.append($('<td>').addClass('recipeButton col-3 col-lg-1').attr('data-counter', beerDisplayCounter).text('Click for a Recipe!'));
 
@@ -193,17 +189,10 @@ $(document).ready(function () {
 
     $('.styleCard').on('click', function () {
 
-        
-
         var counterStyle = $(this).attr('data-name');
-        
-        console.log(counterStyle);
-
-        console.log("I'm here");
-        switch ($(this).attr('data-name')){
-            case "ipaCounter": 
+        switch ($(this).attr('data-name')) {
+            case "ipaCounter":
                 ipaCounter++;
-                console.log(ipaCounter);
                 break;
             case "stoutCounter":
                 stoutCounter++;
@@ -225,7 +214,7 @@ $(document).ready(function () {
             lagerCounter: lagerCounter,
             stoutCounter: stoutCounter
         });
-        
+
         orderNumber = parseInt($(this).attr('data-order'));
         // This portion will move to a separate onclick that delegates to the html body, that way we can use an element we make when the beer API is called and we populate the table.
 
@@ -251,7 +240,7 @@ $(document).ready(function () {
 
 
         //loop through styles from the html and call buildBeerArray to make the api request for that style
-        console.log(beerStylesArray);
+        
         for (var i = 0; i < beerStylesArray.length; i++) {
             buildBeerArray(beerStylesArray[i]);
         }
@@ -288,7 +277,6 @@ $(document).ready(function () {
             } else if (shellfishStyleMatchArray.includes(searchBeerStyle)) {
                 query = "q=shellfish";
             } else {
-                console.log("I went to the else");
                 foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
             };
         } else {
@@ -296,26 +284,19 @@ $(document).ready(function () {
             foodQueryURL = antiCORS + "https://api.edamam.com/search?" + query + "&from=0&to=50&app_id=4149b34a&app_key=3f5a1c6c3c7f31eb7143f33b706fafab";
         }
 
-        console.log(foodQueryURL)
-
         $.ajax({
             url: foodQueryURL,
             method: "GET"
         }).then(function (response) {
-            console.log(response);
             var data = response.hits;
-            console.log(data.length);
             var recipeLink = data[recipeNumber].recipe.url;
-            $('.recipeSpace').html('<a href="' + recipeLink + '" target="_blank">' + data[recipeNumber].recipe.label + '</a>').removeClass('recipeSpace');
-            $('.recipeImage' + rowNumber).html('<img src="' + data[recipeNumber].recipe.image + '" alt="' + data[recipeNumber].recipe.label + ' height="100" width="100">');
+            $('.recipeSpace').html('<a href="' + recipeLink + '" target="_blank">' + data[recipeNumber].recipe.label + '</a>').removeClass('recipeSpace mx-auto');
+            $('.recipeImage' + rowNumber).html('<img src="' + data[recipeNumber].recipe.image + '" alt="' + data[recipeNumber].recipe.label + ' height="100" width="100">').removeClass('mx-auto');
             if (data[recipeNumber].recipe.totalTime != "0") {
-                $('.recipeTime' + rowNumber).text('Approximate cook time: ' + data[recipeNumber].recipe.totalTime + ' minutes');
+                $('.recipeTime' + rowNumber).text('Approximate cook time: ' + data[recipeNumber].recipe.totalTime + ' minutes').removeClass('mx-auto');
             } else {
-                $('.recipeTime' + rowNumber).text("Sorry, we're not sure how long this one will take");
+                $('.recipeTime' + rowNumber).text("Sorry, we're not sure how long this one will take").removeClass('mx-auto');
             };
-            console.log(data[recipeNumber].recipe.url);
-            console.log(data[recipeNumber].recipe.ingredients);
-            console.log(data[recipeNumber].recipe.image);
         });
 
     });
@@ -349,70 +330,92 @@ $(document).ready(function () {
                 url: beerSearchURL,
                 method: "GET"
             }).then(function (searchResponse) {
-                console.log(searchResponse);
+                if (searchResponse.data != null) {
 
-                for (var i = 0; i < searchResponse.data.length; i++) {
-                    searchList.push(searchResponse.data[i]);
-                    searchStyleArray.push(searchResponse.data[i].styleId);
-                };
-                if (searchList.length > 5) {
-                    for (var j = 0; j < 5; j++) {
-                        console.log(searchList);
-                        console.log("the greater than 5 ran");
-                        var beerName = searchList[j].nameDisplay;
-                        var fullBeerDescription = searchList[j].description;
-                        var beerDescription;
-                        var beerABV = searchList[j].abv;
+                    for (var i = 0; i < searchResponse.data.length; i++) {
+                        searchList.push(searchResponse.data[i]);
+                        searchStyleArray.push(searchResponse.data[i].styleId);
+                    };
+                    if (searchList.length > 5) {
+                        for (var j = 0; j < 5; j++) {
+                            var beerName = searchList[j].nameDisplay;
+                            var beerABV = searchList[j].abv;
 
-                        if (fullBeerDescription.length > 200) {
-                            beerDescription = fullBeerDescription.slice(0, 199) + '...';
-                        } else {
-                            beerDescription = fullBeerDescription;
+                            if (searchList[j].description != null) {
+                                var fullBeerDescription = searchList[j].description;
+                                var beerDescription;
+                                if (fullBeerDescription.length > 200) {
+                                    beerDescription = fullBeerDescription.slice(0, 199) + '...';
+                                } else {
+                                    beerDescription = fullBeerDescription;
+                                };
+                            } else {
+                                beerDescription = "No Description Available";
+                            }
+
+
+                            var newRow = $("<tr>").addClass('row row' + searchCounter);
+                            var newTD = $("<td>");
+
+                            newRow.append(newTD);
+                            newRow.append($("<td>").addClass('col-2').text(beerName));
+                            newRow.append($("<td>").addClass('col-2').text(beerABV));
+                            newRow.append($("<td>").addClass('col-3').text(beerDescription));
+                            // Add another data-style to specifiy this is the search results
+                            newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
+
+                            $("#beer-table").append(newRow);
+                            searchCounter++;
                         }
-                        var newRow = $("<tr>").addClass('row row' + searchCounter);
-                        var newTD = $("<td>");
+                    } else if (searchList.length > 0) {
+                        for (var j = 0; j < searchList.length; j++) {
+                            var beerName = searchList[j].nameDisplay;
+                            var fullBeerDescription = searchList[j].description;
+                            var beerDescription;
+                            var beerABV = searchList[j].abv;
 
-                        newRow.append(newTD);
-                        newRow.append($("<td>").addClass('col-2').text(beerName));
-                        newRow.append($("<td>").addClass('col-2').text(beerABV));
-                        newRow.append($("<td>").addClass('col-3').text(beerDescription));
-                        // Add another data-style to specifiy this is the search results
-                        newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
+                            if (fullBeerDescription.length > 200) {
+                                beerDescription = fullBeerDescription.slice(0, 199) + '...';
+                            } else {
+                                beerDescription = fullBeerDescription;
+                            }
+                            var newRow = $("<tr>").addClass('row row' + searchCounter);
+                            var newTD = $("<td>");
 
-                        $("#beer-table").append(newRow);
-                        console.log(beerName);
+                            newRow.append(newTD);
+                            newRow.append($("<td>").addClass('col-2').text(beerName));
+                            newRow.append($("<td>").addClass('col-2').text(beerABV));
+                            newRow.append($("<td>").addClass('col-2').text(beerDescription));
+                            newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
 
-                        searchCounter++;
-                    }
-                } else if (searchList.length > 0) {
-                    for (var j = 0; j < searchList.length; j++) {
-                        var beerName = searchList[j].nameDisplay;
-                        var fullBeerDescription = searchList[j].description;
-                        var beerDescription;
-                        var beerABV = searchList[j].abv;
+                            $("#beer-table").append(newRow);
 
-                        if (fullBeerDescription.length > 200) {
-                            beerDescription = fullBeerDescription.slice(0, 199) + '...';
-                        } else {
-                            beerDescription = fullBeerDescription;
+                            searchCounter++;
                         }
-                        var newRow = $("<tr>").addClass('row row' + searchCounter);
-                        var newTD = $("<td>");
-
-                        newRow.append(newTD);
-                        newRow.append($("<td>").addClass('col-2').text(beerName));
-                        newRow.append($("<td>").addClass('col-2').text(beerABV));
-                        newRow.append($("<td>").addClass('col-2').text(beerDescription));
-                        newRow.append($('<td>').addClass('col-2 recipeButton').attr('data-counter', searchCounter).attr('data-source', 'random').text('Click for a Recipe!'));
-
-                        $("#beer-table").append(newRow);
-
-                        searchCounter++;
                     }
+                } else {
+                    $("#validation-alert").addClass("alert alert-warning alert-dismissible fade show");
+                    $("#validation-alert").text("Sorry, our database didn't find anything for that beer.")
+
+                    setTimeout(function () {
+                        $("#validation-alert").removeClass("alert alert-warning alert-dismissible fade show");
+                        $("#validation-alert").empty();
+
+                    }, 2000);
                 }
             });
         }
         //else for when input validation fails
+        else if (searchValue.length < 1) {
+            $("#validation-alert").addClass("alert alert-warning alert-dismissible fade show");
+            $("#validation-alert").text("It looks like you forgot to enter a search term. Please try again.")
+
+            setTimeout(function () {
+                $("#validation-alert").removeClass("alert alert-warning alert-dismissible fade show");
+                $("#validation-alert").empty();
+
+            }, 2000);
+        }
         else {
             $("#validation-alert").addClass("alert alert-warning alert-dismissible fade show");
             $("#validation-alert").text("No special characters allowed in search. Please try again.")
@@ -420,7 +423,6 @@ $(document).ready(function () {
             setTimeout(function () {
                 $("#validation-alert").removeClass("alert alert-warning alert-dismissible fade show");
                 $("#validation-alert").empty();
-                $("#validation-alert").close();
 
             }, 2000);
 
